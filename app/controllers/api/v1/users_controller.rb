@@ -1,23 +1,16 @@
 class Api::V1::UsersController < Api::V1::BaseController
-
-  before_action -> { doorkeeper_authorize! :public }, only: :index
-  before_action only: [:create, :update, :destroy] do
-    doorkeeper_authorize! :admin
-    doorkeeper_authorize! :write
-  end
-
-  # before_action :doorkeeper_authorize!
-  # before_action :authenticate_with_token!, only: [:update]
-  # before_action :find_user, only: [:show, :update]
+  before_action :validate_admin?, only: [:create, :update]
+  before_action :find_user, only: [:show, :update]
 
   def columns
-    exclude_columns = ['auth_token', 'created_at', 'updated_at']
+    exclude_columns = ['created_at', 'updated_at']
     User.attribute_names.delete_if{|x| exclude_columns.include?(x)}
   end
 
   def index
-    @users = User.select(columns)
-    render json: { message: "Consult Correct.", success: true, users: @users , current: current_resource_owner }, status: :ok
+    @users = User.where(companies_id: current_resource_owner.companies_id ).select(columns) if current_resource_owner.admin?
+    @users = [current_resource_owner] if current_resource_owner.employee?
+    render json: { message: "Consult Correct.", success: true, users: @users.as_json(include: [:registrations]) }, status: :ok
   end
 
   def create
@@ -43,7 +36,7 @@ class Api::V1::UsersController < Api::V1::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.require(:user).permit(:email, :password, :password_confirmation, :phone, :maternal, :paternal, :status, :role, :companies_id )
   end
 
   def find_user

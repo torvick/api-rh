@@ -9,9 +9,10 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :users
-      # resources :sessions
-
+      resources :companies
+      resources :registrations
     end
   end
-  post 'api/v1/sessions' => 'doorkeeper/tokens#create'
+  post    'api/v1/sessions' => 'doorkeeper/tokens#create'
+  delete  'api/v1/sessions' => 'doorkeeper/tokens#revoke'
 end

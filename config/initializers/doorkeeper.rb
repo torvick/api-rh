@@ -15,7 +15,10 @@ Doorkeeper.configure do
 
   # In this flow, a token is requested in exchange for the resource owner credentials (username and password)
   resource_owner_from_credentials do |routes|
-    User.authenticate(params[:username], params[:password])
+    user = User.find_for_database_authentication(:email => params[:username])
+    if user && user.valid_for_authentication? { user.valid_password?(params[:password]) }
+      user
+    end
   end
 
   access_token_expires_in 5.days
@@ -111,8 +114,8 @@ Doorkeeper.configure do
   # For more information go to
   # https://github.com/doorkeeper-gem/doorkeeper/wiki/Using-Scopes
   #
-  default_scopes  :public
-  optional_scopes :write, :update
+  # default_scopes  :public
+  # optional_scopes :admin, :write
 
   # Change the way client credentials are retrieved from the request object.
   # By default it retrieves first from the `HTTP_AUTHORIZATION` header, then
