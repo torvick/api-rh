@@ -1,7 +1,14 @@
 class Api::V1::UsersController < Api::V1::BaseController
 
-  before_action :authenticate_with_token!, only: [:update]
-  before_action :find_user, only: [:show, :update]
+  before_action -> { doorkeeper_authorize! :public }, only: :index
+  before_action only: [:create, :update, :destroy] do
+    doorkeeper_authorize! :admin
+    doorkeeper_authorize! :write
+  end
+
+  # before_action :doorkeeper_authorize!
+  # before_action :authenticate_with_token!, only: [:update]
+  # before_action :find_user, only: [:show, :update]
 
   def columns
     exclude_columns = ['auth_token', 'created_at', 'updated_at']
@@ -10,7 +17,7 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def index
     @users = User.select(columns)
-    render json: { message: "Consult Correct.", success: true, users: @users }, status: :ok
+    render json: { message: "Consult Correct.", success: true, users: @users , current: current_resource_owner }, status: :ok
   end
 
   def create
