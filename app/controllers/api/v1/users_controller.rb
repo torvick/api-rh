@@ -1,5 +1,4 @@
 class Api::V1::UsersController < Api::V1::BaseController
-  before_action :validate_admin?, only: [:create, :update]
   before_action :find_user, only: [:show, :update]
 
   def columns
@@ -8,12 +7,14 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def index
+    authorize User
     @users = User.where(companies_id: current_resource_owner.companies_id ).select(columns) if current_resource_owner.admin?
     @users = [current_resource_owner] if current_resource_owner.employee?
     render json: { message: "Consult Correct.", success: true, users: @users.as_json(include: [:registrations]) }, status: :ok
   end
 
   def create
+    authorize User
     user = User.new(user_params)
     user.password = params[:password]
     user.password_confirmation = params[:password_confirmation]
@@ -22,11 +23,13 @@ class Api::V1::UsersController < Api::V1::BaseController
   end
 
   def update
+    authorize User
     return render json: { errors: @user.errors, message: "User couldn't be updated successfully.", success: false }, status: :unprocessable_entity if !@user.update(user_params)
     render json: { user: @user, message: "User updated successfully.", success: true }, status: :ok
   end
 
   def show
+    authorize User
     render json: { user: @user, success: true }, status: :ok
   end
 

@@ -11,6 +11,7 @@ gem 'puma', '~> 3.7'
 gem 'devise'
 gem 'rack-cors'
 gem 'doorkeeper'
+gem 'pundit'
 
 
 
