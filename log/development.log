@@ -4845,3 +4845,1206 @@ FOREIGN KEY ("companies_id")
   [1m[36mUser Exists (0.2ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba2@gmail.com"], ["LIMIT", 1]]
   [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "users" ("name", "paternal", "maternal", "phone", "email", "encrypted_password", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["name", "Prueba2"], ["paternal", "Prueba2"], ["maternal", "Prueba2"], ["phone", "5510101010"], ["email", "prueba2@gmail.com"], ["encrypted_password", "$2a$11$zTl6fzj0.O44AiYpBmBTcOEhsdUXK0gxVVsUSwCxbFzeOqD7QiOcO"], ["role", 0], ["created_at", "2018-10-08 18:29:16.109780"], ["updated_at", "2018-10-08 18:29:16.109780"], ["companies_id", 1]]
   [1m[35m (0.8ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (11.9ms)[0m  [1m[34mSELECT pg_try_advisory_lock(1155279716159505300)[0m
+  [1m[35m (2.9ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateCompanies (20181008154203)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (77.2ms)[0m  [1m[35mCREATE TABLE "companies" ("id" bigserial primary key, "name" character varying, "rfc" character varying, "email" character varying, "phone" character varying, "city" character varying, "number_ext" character varying, "number_int" character varying, "postal_code" character varying, "state" character varying, "suburb" character varying, "address" character varying, "user_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_e57cb42012"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (1.2ms)[0m  [1m[35mCREATE  INDEX  "index_companies_on_user_id" ON "companies"  ("user_id")[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008154203"]]
+  [1m[35m (2.0ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRegistrations (20181008163503)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.6ms)[0m  [1m[35mCREATE TABLE "registrations" ("id" bigserial primary key, "check_in" timestamp, "check_out" timestamp, "user_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_2e0658f554"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX  "index_registrations_on_user_id" ON "registrations"  ("user_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008163503"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddReferenceToUser (20181008172845)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mALTER TABLE "users" ADD "companies_id" bigint[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_companies_id" ON "users"  ("companies_id")[0m
+  [1m[35m (2.9ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_cec78c7281"
+FOREIGN KEY ("companies_id")
+  REFERENCES "companies" ("id")
+[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008172845"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (1.5ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(1155279716159505300)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/sessions" for 127.0.0.1 at 2018-10-08 17:48:26 -0500
+  [1m[35m (2.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (5.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "vh.urquides@gmail.com"], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDoorkeeper::AccessToken Exists (26.6ms)[0m  [1m[34mSELECT  1 AS one FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "a102b758938e5a0a0ec9759d16b2eee9869abb10742ad2b5f3d4bc795c3842c4"], ["LIMIT", 1]]
+  [1m[35mSQL (5.4ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("resource_owner_id", "token", "expires_in", "created_at", "scopes") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["resource_owner_id", 1], ["token", "a102b758938e5a0a0ec9759d16b2eee9869abb10742ad2b5f3d4bc795c3842c4"], ["expires_in", 432000], ["created_at", "2018-10-08 22:48:27.119086"], ["scopes", ""]]
+  [1m[35m (4.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/oauth/token" for 127.0.0.1 at 2018-10-08 17:49:15 -0500
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "vh.urquides@gmail.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDoorkeeper::AccessToken Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "339899d952a148f9b9bccaf4245b45de7de26d9a95a5290fe87774300ec572aa"], ["LIMIT", 1]]
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("resource_owner_id", "token", "expires_in", "created_at", "scopes") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["resource_owner_id", 1], ["token", "339899d952a148f9b9bccaf4245b45de7de26d9a95a5290fe87774300ec572aa"], ["expires_in", 432000], ["created_at", "2018-10-08 22:49:15.288001"], ["scopes", ""]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (14.4ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1[0m  [["key", "environment"]]
+  [1m[35m (202.8ms)[0m  [1m[35mDROP DATABASE IF EXISTS "api-rh_development"[0m
+  [1m[35m (214.4ms)[0m  [1m[35mDROP DATABASE IF EXISTS "api-rh_test"[0m
+  [1m[35m (599.0ms)[0m  [1m[35mCREATE DATABASE "api-rh_development" ENCODING = 'unicode'[0m
+  [1m[35m (490.1ms)[0m  [1m[35mCREATE DATABASE "api-rh_test" ENCODING = 'unicode'[0m
+  [1m[35m (8.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (3.6ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT pg_try_advisory_lock(1155279716159505300)[0m
+  [1m[35m (0.7ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to DeviseCreateUsers (20181007065426)
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (21.7ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "name" character varying, "paternal" character varying, "maternal" character varying, "rfc" character varying, "phone" character varying, "email" character varying DEFAULT '' NOT NULL, "encrypted_password" character varying DEFAULT '' NOT NULL, "reset_password_token" character varying, "reset_password_sent_at" timestamp, "remember_created_at" timestamp, "city" character varying, "number_ext" character varying, "number_int" character varying, "postal_code" character varying, "state" character varying, "suburb" character varying, "address" character varying, "role" integer, "status" boolean DEFAULT 't', "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_email" ON "users"  ("email")[0m
+  [1m[35m (1.8ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_users_on_reset_password_token" ON "users"  ("reset_password_token")[0m
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181007065426"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateDoorkeeperTables (20181007212617)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (18.1ms)[0m  [1m[35mCREATE TABLE "oauth_applications" ("id" bigserial primary key, "name" character varying NOT NULL, "uid" character varying NOT NULL, "secret" character varying NOT NULL, "redirect_uri" text NOT NULL, "scopes" character varying DEFAULT '' NOT NULL, "confidential" boolean DEFAULT 't' NOT NULL, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_oauth_applications_on_uid" ON "oauth_applications"  ("uid")[0m
+  [1m[35m (5.3ms)[0m  [1m[35mCREATE TABLE "oauth_access_grants" ("id" bigserial primary key, "resource_owner_id" integer NOT NULL, "application_id" bigint NOT NULL, "token" character varying NOT NULL, "expires_in" integer NOT NULL, "redirect_uri" text NOT NULL, "created_at" timestamp NOT NULL, "revoked_at" timestamp, "scopes" character varying)[0m
+  [1m[35m (1.5ms)[0m  [1m[35mCREATE  INDEX  "index_oauth_access_grants_on_application_id" ON "oauth_access_grants"  ("application_id")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_oauth_access_grants_on_token" ON "oauth_access_grants"  ("token")[0m
+  [1m[35m (3.0ms)[0m  [1m[35mALTER TABLE "oauth_access_grants" ADD CONSTRAINT "fk_rails_b4b53e07b8"
+FOREIGN KEY ("application_id")
+  REFERENCES "oauth_applications" ("id")
+[0m
+  [1m[35m (3.7ms)[0m  [1m[35mCREATE TABLE "oauth_access_tokens" ("id" bigserial primary key, "resource_owner_id" integer, "application_id" bigint, "token" character varying NOT NULL, "refresh_token" character varying, "expires_in" integer, "revoked_at" timestamp, "created_at" timestamp NOT NULL, "scopes" character varying, "previous_refresh_token" character varying DEFAULT '' NOT NULL)[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE  INDEX  "index_oauth_access_tokens_on_application_id" ON "oauth_access_tokens"  ("application_id")[0m
+  [1m[35m (1.1ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_oauth_access_tokens_on_token" ON "oauth_access_tokens"  ("token")[0m
+  [1m[35m (1.4ms)[0m  [1m[35mCREATE  INDEX  "index_oauth_access_tokens_on_resource_owner_id" ON "oauth_access_tokens"  ("resource_owner_id")[0m
+  [1m[35m (1.0ms)[0m  [1m[35mCREATE UNIQUE INDEX  "index_oauth_access_tokens_on_refresh_token" ON "oauth_access_tokens"  ("refresh_token")[0m
+  [1m[35m (1.3ms)[0m  [1m[35mALTER TABLE "oauth_access_tokens" ADD CONSTRAINT "fk_rails_732cb83ab7"
+FOREIGN KEY ("application_id")
+  REFERENCES "oauth_applications" ("id")
+[0m
+  [1m[35m (1.4ms)[0m  [1m[35mALTER TABLE "oauth_access_tokens" ADD CONSTRAINT "fk_rails_ee63f25419"
+FOREIGN KEY ("resource_owner_id")
+  REFERENCES "users" ("id")
+[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181007212617"]]
+  [1m[35m (0.9ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateCompanies (20181008154203)
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.8ms)[0m  [1m[35mCREATE TABLE "companies" ("id" bigserial primary key, "name" character varying, "rfc" character varying, "email" character varying, "phone" character varying, "city" character varying, "number_ext" character varying, "number_int" character varying, "postal_code" character varying, "state" character varying, "suburb" character varying, "address" character varying, "user_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_e57cb42012"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.9ms)[0m  [1m[35mCREATE  INDEX  "index_companies_on_user_id" ON "companies"  ("user_id")[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008154203"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateRegistrations (20181008163503)
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (3.9ms)[0m  [1m[35mCREATE TABLE "registrations" ("id" bigserial primary key, "check_in" timestamp, "check_out" timestamp, "user_id" bigint, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL, CONSTRAINT "fk_rails_2e0658f554"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (1.3ms)[0m  [1m[35mCREATE  INDEX  "index_registrations_on_user_id" ON "registrations"  ("user_id")[0m
+  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008163503"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to AddReferenceToUser (20181008172845)
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.6ms)[0m  [1m[35mALTER TABLE "users" ADD "companies_id" bigint[0m
+  [1m[35m (1.6ms)[0m  [1m[35mCREATE  INDEX  "index_users_on_companies_id" ON "users"  ("companies_id")[0m
+  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "users" ADD CONSTRAINT "fk_rails_cec78c7281"
+FOREIGN KEY ("companies_id")
+  REFERENCES "companies" ("id")
+[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20181008172845"]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2018-10-08 22:49:46.458453"], ["updated_at", "2018-10-08 22:49:46.458453"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT pg_advisory_unlock(1155279716159505300)[0m
+  [1m[35m (0.3ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.4ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (1.1ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "companies" ("name", "rfc", "email", "phone", "city", "number_ext", "number_int", "postal_code", "state", "suburb", "address", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["name", "Prueba1"], ["rfc", "Prueba1"], ["email", "prueba1@mail.mx"], ["phone", "5510101010"], ["city", "CDMX"], ["number_ext", "1"], ["number_int", "2"], ["postal_code", "03100"], ["state", "CDMX"], ["suburb", "CDMX"], ["address", "CDMX"], ["created_at", "2018-10-08 22:49:46.586561"], ["updated_at", "2018-10-08 22:49:46.586561"]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mCompany Load (0.3ms)[0m  [1m[34mSELECT  "companies".* FROM "companies" ORDER BY "companies"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "vh.urquides@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "users" ("name", "paternal", "maternal", "phone", "email", "encrypted_password", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["name", "Victor"], ["paternal", "Urquides"], ["maternal", "Puentes"], ["phone", "5520840226"], ["email", "vh.urquides@gmail.com"], ["encrypted_password", "$2a$11$xb.jF/WkY0RiLHTM3c00ouo3YdRt.4JQ31J/nOppusMwmr9unueU."], ["role", 1], ["created_at", "2018-10-08 22:49:46.810652"], ["updated_at", "2018-10-08 22:49:46.810652"], ["companies_id", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mCompany Load (0.3ms)[0m  [1m[34mSELECT  "companies".* FROM "companies" ORDER BY "companies"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba2@gmail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "users" ("name", "paternal", "maternal", "phone", "email", "encrypted_password", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING "id"[0m  [["name", "Prueba2"], ["paternal", "Prueba2"], ["maternal", "Prueba2"], ["phone", "5510101010"], ["email", "prueba2@gmail.com"], ["encrypted_password", "$2a$11$beV1wdqrnWkgK2M2.3iQoeP1UowpQVfnb2bkau0JOukrhVEXzsSz2"], ["role", 0], ["created_at", "2018-10-08 22:49:46.997314"], ["updated_at", "2018-10-08 22:49:46.997314"], ["companies_id", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/oauth/token" for 127.0.0.1 at 2018-10-08 17:50:30 -0500
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mUser Load (1.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "vh.urquides@gmail.com"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDoorkeeper::AccessToken Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[35mSQL (3.2ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("resource_owner_id", "token", "expires_in", "created_at", "scopes") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["resource_owner_id", 1], ["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["expires_in", 432000], ["created_at", "2018-10-08 22:50:31.029375"], ["scopes", ""]]
+  [1m[35m (1.6ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/v1/users" for 127.0.0.1 at 2018-10-08 17:53:17 -0500
+Processing by Api::V1::UsersController#create as JSON
+  Parameters: {"name"=>"Prueba3", "paternal"=>"Prueba3", "maternal"=>"Prueba3", "email"=>"prueba3@mail.com", "phone"=>"5520102010", "role"=>"employee", "companies_id"=>1, "status"=>"employee", "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "user"=>{"name"=>"Prueba3", "paternal"=>"Prueba3", "maternal"=>"Prueba3", "phone"=>"5520102010", "email"=>"prueba3@mail.com", "role"=>"employee", "status"=>"employee", "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Unpermitted parameter: :name
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba3@mail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (1.7ms)[0m  [1m[32mINSERT INTO "users" ("paternal", "maternal", "phone", "email", "encrypted_password", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["paternal", "Prueba3"], ["maternal", "Prueba3"], ["phone", "5520102010"], ["email", "prueba3@mail.com"], ["encrypted_password", "$2a$11$Ns8F1YWD07Q1w/Q2D1KWP.qmuPieVgPo09ZhJqcqmcxwIrbq51RoC"], ["role", 0], ["created_at", "2018-10-08 22:53:18.085942"], ["updated_at", "2018-10-08 22:53:18.085942"], ["companies_id", 1]]
+  [1m[35m (3.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 188ms (Views: 0.6ms | ActiveRecord: 6.8ms)
+
+
+Started POST "/api/v1/users" for 127.0.0.1 at 2018-10-08 17:54:46 -0500
+Processing by Api::V1::UsersController#create as JSON
+  Parameters: {"name"=>"Prueba4", "paternal"=>"Prueba4", "maternal"=>"Prueba4", "email"=>"prueba4@mail.com", "phone"=>"5520102014", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "user"=>{"name"=>"Prueba4", "paternal"=>"Prueba4", "maternal"=>"Prueba4", "phone"=>"5520102014", "email"=>"prueba4@mail.com", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (3.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Unpermitted parameter: :name
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba4@mail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (2.5ms)[0m  [1m[32mINSERT INTO "users" ("paternal", "maternal", "phone", "email", "encrypted_password", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING "id"[0m  [["paternal", "Prueba4"], ["maternal", "Prueba4"], ["phone", "5520102014"], ["email", "prueba4@mail.com"], ["encrypted_password", "$2a$11$t2oFd5SPmnNhIOOkTtkfzuQJvLveYmjgVIvCiZtBGdoou1yADIT1C"], ["role", 0], ["created_at", "2018-10-08 22:54:46.568134"], ["updated_at", "2018-10-08 22:54:46.568134"], ["companies_id", 1]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 259ms (Views: 1.3ms | ActiveRecord: 19.7ms)
+
+
+Started POST "/api/v1/users" for 127.0.0.1 at 2018-10-08 17:57:40 -0500
+Processing by Api::V1::UsersController#create as JSON
+  Parameters: {"name"=>"Prueba5", "paternal"=>"Prueba5", "maternal"=>"Prueba5", "email"=>"prueba5@mail.com", "phone"=>"5520102015", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "user"=>{"name"=>"Prueba5", "paternal"=>"Prueba5", "maternal"=>"Prueba5", "phone"=>"5520102015", "email"=>"prueba5@mail.com", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba5@mail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.7ms)[0m  [1m[32mINSERT INTO "users" ("name", "paternal", "maternal", "phone", "email", "encrypted_password", "city", "number_ext", "number_int", "postal_code", "state", "suburb", "address", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"[0m  [["name", "Prueba5"], ["paternal", "Prueba5"], ["maternal", "Prueba5"], ["phone", "5520102015"], ["email", "prueba5@mail.com"], ["encrypted_password", "$2a$11$CC64UtNX5zEexv1TnXU9J.x/WKyAouVjL689GtWewGjm.gStvGRXm"], ["city", "CDMX"], ["number_ext", "1"], ["number_int", "2"], ["postal_code", "31100"], ["state", "CDMX"], ["suburb", "CDMX"], ["address", "CDMX"], ["role", 0], ["created_at", "2018-10-08 22:57:40.324387"], ["updated_at", "2018-10-08 22:57:40.324387"], ["companies_id", 1]]
+  [1m[35m (3.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 251ms (Views: 1.5ms | ActiveRecord: 10.4ms)
+
+
+Started POST "/api/v1/users" for 127.0.0.1 at 2018-10-08 17:58:17 -0500
+Processing by Api::V1::UsersController#create as JSON
+  Parameters: {"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "email"=>"prueba6@mail.com", "phone"=>"5520102016", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "user"=>{"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "phone"=>"5520102016", "email"=>"prueba6@mail.com", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Unpermitted parameter: :rfc
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "users" WHERE "users"."email" = $1 LIMIT $2[0m  [["email", "prueba6@mail.com"], ["LIMIT", 1]]
+  [1m[35mSQL (0.9ms)[0m  [1m[32mINSERT INTO "users" ("name", "paternal", "maternal", "phone", "email", "encrypted_password", "city", "number_ext", "number_int", "postal_code", "state", "suburb", "address", "role", "created_at", "updated_at", "companies_id") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17) RETURNING "id"[0m  [["name", "Prueba6"], ["paternal", "Prueba6"], ["maternal", "Prueba6"], ["phone", "5520102016"], ["email", "prueba6@mail.com"], ["encrypted_password", "$2a$11$JjcNnMePT/3DujiIVb/8TOz9AbMsHNYJ2l/OkFjnsPNeL0w8ehIBK"], ["city", "CDMX"], ["number_ext", "1"], ["number_int", "2"], ["postal_code", "31100"], ["state", "CDMX"], ["suburb", "CDMX"], ["address", "CDMX"], ["role", 0], ["created_at", "2018-10-08 22:58:17.707057"], ["updated_at", "2018-10-08 22:58:17.707057"], ["companies_id", 1]]
+  [1m[35m (1.4ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 189ms (Views: 0.9ms | ActiveRecord: 4.5ms)
+
+
+Started PUT "/api/v1/users" for 127.0.0.1 at 2018-10-08 19:16:45 -0500
+  
+ActionController::RoutingError (No route matches [PUT] "/api/v1/users"):
+  
+actionpack (5.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.6) lib/rails/engine.rb:522:in `call'
+puma (3.12.0) lib/puma/configuration.rb:225:in `call'
+puma (3.12.0) lib/puma/server.rb:658:in `handle_request'
+puma (3.12.0) lib/puma/server.rb:472:in `process_client'
+puma (3.12.0) lib/puma/server.rb:332:in `block in run'
+puma (3.12.0) lib/puma/thread_pool.rb:133:in `block in spawn_thread'
+Started PUT "/api/v1/users/7" for 127.0.0.1 at 2018-10-08 19:17:38 -0500
+Processing by Api::V1::UsersController#update as JSON
+  Parameters: {"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "email"=>"prueba6@mail.com", "phone"=>"5520102016", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "id"=>"7", "user"=>{"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "phone"=>"5520102016", "email"=>"prueba6@mail.com", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.6ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 7], ["LIMIT", 1]]
+Completed 404 Not Found in 53ms (ActiveRecord: 13.5ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find User with 'id'=7):
+  
+app/controllers/api/v1/users_controller.rb:40:in `find_user'
+Started PUT "/api/v1/users/6" for 127.0.0.1 at 2018-10-08 19:17:45 -0500
+Processing by Api::V1::UsersController#update as JSON
+  Parameters: {"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "email"=>"prueba6@mail.com", "phone"=>"5520102016", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "id"=>"6", "user"=>{"name"=>"Prueba6", "paternal"=>"Prueba6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "phone"=>"5520102016", "email"=>"prueba6@mail.com", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.6ms)[0m  [1m[33mUPDATE "users" SET "rfc" = $1, "updated_at" = $2 WHERE "users"."id" = $3[0m  [["rfc", "Prueba6"], ["updated_at", "2018-10-09 00:17:45.775306"], ["id", 6]]
+  [1m[35m (6.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 18ms (Views: 0.8ms | ActiveRecord: 8.2ms)
+
+
+Started PUT "/api/v1/users/6" for 127.0.0.1 at 2018-10-08 19:18:02 -0500
+Processing by Api::V1::UsersController#update as JSON
+  Parameters: {"name"=>"Test6", "paternal"=>"Test6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "email"=>"prueba6@mail.com", "phone"=>"5520102016", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "companies_id"=>1, "status"=>true, "password"=>"[FILTERED]", "password_confirmation"=>"[FILTERED]", "id"=>"6", "user"=>{"name"=>"Test6", "paternal"=>"Test6", "maternal"=>"Prueba6", "rfc"=>"Prueba6", "phone"=>"5520102016", "email"=>"prueba6@mail.com", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"31100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "role"=>"employee", "status"=>true, "companies_id"=>1}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[33mUPDATE "users" SET "paternal" = $1, "name" = $2, "updated_at" = $3 WHERE "users"."id" = $4[0m  [["paternal", "Test6"], ["name", "Test6"], ["updated_at", "2018-10-09 00:18:02.510905"], ["id", 6]]
+  [1m[35m (6.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 16ms (Views: 0.8ms | ActiveRecord: 7.8ms)
+
+
+Started GET "/api/v1/users/6" for 127.0.0.1 at 2018-10-08 19:18:45 -0500
+Processing by Api::V1::UsersController#show as JSON
+  Parameters: {"id"=>"6", "user"=>{}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 6], ["LIMIT", 1]]
+Completed 200 OK in 6ms (Views: 1.1ms | ActiveRecord: 0.8ms)
+
+
+Started GET "/api/v1/companies" for 127.0.0.1 at 2018-10-08 19:19:45 -0500
+Processing by Api::V1::CompaniesController#index as JSON
+Filter chain halted as :doorkeeper_authorize! rendered or redirected
+Completed 401 Unauthorized in 28ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/api/v1/companies" for 127.0.0.1 at 2018-10-08 19:19:55 -0500
+Processing by Api::V1::CompaniesController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.7ms)[0m  [1m[34mSELECT "companies"."id", "companies"."name", "companies"."rfc", "companies"."email", "companies"."phone", "companies"."city", "companies"."number_ext", "companies"."number_int", "companies"."postal_code", "companies"."state", "companies"."suburb", "companies"."address", "companies"."user_id" FROM "companies" WHERE "companies"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 34ms (Views: 18.7ms | ActiveRecord: 5.0ms)
+
+
+Started POST "/api/v1/companies" for 127.0.0.1 at 2018-10-08 19:25:07 -0500
+Processing by Api::V1::CompaniesController#create as JSON
+  Parameters: {"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520101010", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "company"=>{"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520101010", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (1.5ms)[0m  [1m[32mINSERT INTO "companies" ("name", "rfc", "email", "phone", "city", "number_ext", "number_int", "postal_code", "state", "suburb", "address", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING "id"[0m  [["name", "Company1"], ["rfc", "Company1"], ["email", "company1@mail.mx"], ["phone", "5520101010"], ["city", "CDMX"], ["number_ext", "1"], ["number_int", "2"], ["postal_code", "03100"], ["state", "CDMX"], ["suburb", "CDMX"], ["address", "CDMX"], ["created_at", "2018-10-09 00:25:07.343697"], ["updated_at", "2018-10-09 00:25:07.343697"]]
+  [1m[35m (2.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 93ms (Views: 0.9ms | ActiveRecord: 19.5ms)
+
+
+Started GET "/api/v1/companies" for 127.0.0.1 at 2018-10-08 19:25:29 -0500
+Processing by Api::V1::CompaniesController#index as JSON
+  Parameters: {"company"=>{}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.6ms)[0m  [1m[34mSELECT "companies"."id", "companies"."name", "companies"."rfc", "companies"."email", "companies"."phone", "companies"."city", "companies"."number_ext", "companies"."number_int", "companies"."postal_code", "companies"."state", "companies"."suburb", "companies"."address", "companies"."user_id" FROM "companies" WHERE "companies"."id" = $1[0m  [["id", 1]]
+Completed 200 OK in 8ms (Views: 1.9ms | ActiveRecord: 1.2ms)
+
+
+Started PUT "/api/v1/companies" for 127.0.0.1 at 2018-10-08 19:26:00 -0500
+  
+ActionController::RoutingError (No route matches [PUT] "/api/v1/companies"):
+  
+actionpack (5.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.6) lib/rails/engine.rb:522:in `call'
+puma (3.12.0) lib/puma/configuration.rb:225:in `call'
+puma (3.12.0) lib/puma/server.rb:658:in `handle_request'
+puma (3.12.0) lib/puma/server.rb:472:in `process_client'
+puma (3.12.0) lib/puma/server.rb:332:in `block in run'
+puma (3.12.0) lib/puma/thread_pool.rb:133:in `block in spawn_thread'
+Started PUT "/api/v1/companies/2" for 127.0.0.1 at 2018-10-08 19:26:08 -0500
+Processing by Api::V1::CompaniesController#update as JSON
+  Parameters: {"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520202020", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "id"=>"2", "company"=>{"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520202020", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX"}}
+  [1m[36mDoorkeeper::AccessToken Load (9.1ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.4ms)[0m  [1m[34mSELECT  "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35mSQL (0.5ms)[0m  [1m[33mUPDATE "companies" SET "phone" = $1, "updated_at" = $2 WHERE "companies"."id" = $3[0m  [["phone", "5520202020"], ["updated_at", "2018-10-09 00:26:08.446381"], ["id", 2]]
+  [1m[35m (0.5ms)[0m  [1m[35mCOMMIT[0m
+Completed 500 Internal Server Error in 187ms (ActiveRecord: 11.0ms)
+
+
+  
+NameError (undefined local variable or method `company' for #<Api::V1::CompaniesController:0x00007fa6470f8120>
+Did you mean?  @company):
+  
+app/controllers/api/v1/companies_controller.rb:23:in `update'
+Started PUT "/api/v1/companies/2" for 127.0.0.1 at 2018-10-08 19:26:39 -0500
+Processing by Api::V1::CompaniesController#update as JSON
+  Parameters: {"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520202020", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX", "id"=>"2", "company"=>{"name"=>"Company1", "rfc"=>"Company1", "email"=>"company1@mail.mx", "phone"=>"5520202020", "city"=>"CDMX", "number_ext"=>"1", "number_int"=>"2", "postal_code"=>"03100", "state"=>"CDMX", "suburb"=>"CDMX", "address"=>"CDMX"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCompany Load (0.4ms)[0m  [1m[34mSELECT  "companies".* FROM "companies" WHERE "companies"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 84ms (Views: 0.8ms | ActiveRecord: 11.1ms)
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 19:27:26 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+Filter chain halted as :doorkeeper_authorize! rendered or redirected
+Completed 401 Unauthorized in 1ms (ActiveRecord: 0.0ms)
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 19:27:36 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.7ms)[0m  [1m[34mSELECT "registrations"."id", "registrations"."check_in", "registrations"."check_out", "registrations"."user_id" FROM "registrations"[0m
+Completed 200 OK in 13ms (Views: 1.0ms | ActiveRecord: 3.7ms)
+
+
+Started POST "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 19:29:36 -0500
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"check_in"=>"2018-10-08", "check_out"=>"2018-10-08", "user_id"=>"2", "registration"=>{"check_in"=>"2018-10-08", "check_out"=>"2018-10-08", "user_id"=>"2"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35mSQL (1.8ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "check_out", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["check_in", "2018-10-08 00:00:00"], ["check_out", "2018-10-08 00:00:00"], ["user_id", 2], ["created_at", "2018-10-09 00:29:36.819996"], ["updated_at", "2018-10-09 00:29:36.819996"]]
+  [1m[35m (6.0ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 71ms (Views: 1.1ms | ActiveRecord: 15.8ms)
+
+
+Started POST "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 19:30:27 -0500
+Processing by Api::V1::RegistrationsController#create as JSON
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (1.6ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-08 08:00:01"], ["user_id", 3], ["created_at", "2018-10-09 00:30:27.021807"], ["updated_at", "2018-10-09 00:30:27.021807"]]
+  [1m[35m (0.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 13ms (Views: 0.9ms | ActiveRecord: 3.5ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 19:32:25 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.8ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-08 08:00:01"], ["user_id", 3], ["created_at", "2018-10-09 00:32:26.052540"], ["updated_at", "2018-10-09 00:32:26.052540"]]
+  [1m[35m (1.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 77ms (Views: 0.6ms | ActiveRecord: 14.9ms)
+
+
+Started PUT "/api/v1/check_out" for 127.0.0.1 at 2018-10-08 19:33:17 -0500
+Processing by Api::V1::RegistrationsController#update as */*
+  Parameters: {"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3", "registration"=>{"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.7ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.2ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."id" = $1 LIMIT $2[0m  [["id", nil], ["LIMIT", 1]]
+Completed 404 Not Found in 10ms (ActiveRecord: 1.3ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Registration with 'id'=):
+  
+app/controllers/api/v1/registrations_controller.rb:38:in `find_registration'
+Started PUT "/api/v1/check_out/3" for 127.0.0.1 at 2018-10-08 19:33:27 -0500
+  
+ActionController::RoutingError (No route matches [PUT] "/api/v1/check_out/3"):
+  
+actionpack (5.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.6) lib/rails/engine.rb:522:in `call'
+puma (3.12.0) lib/puma/configuration.rb:225:in `call'
+puma (3.12.0) lib/puma/server.rb:658:in `handle_request'
+puma (3.12.0) lib/puma/server.rb:472:in `process_client'
+puma (3.12.0) lib/puma/server.rb:332:in `block in run'
+puma (3.12.0) lib/puma/thread_pool.rb:133:in `block in spawn_thread'
+Started PUT "/api/v1/check_out/2" for 127.0.0.1 at 2018-10-08 19:33:32 -0500
+  
+ActionController::RoutingError (No route matches [PUT] "/api/v1/check_out/2"):
+  
+actionpack (5.1.6) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.6) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.6) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.6) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.5) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.6) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.6) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.5) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.6) lib/rails/engine.rb:522:in `call'
+puma (3.12.0) lib/puma/configuration.rb:225:in `call'
+puma (3.12.0) lib/puma/server.rb:658:in `handle_request'
+puma (3.12.0) lib/puma/server.rb:472:in `process_client'
+puma (3.12.0) lib/puma/server.rb:332:in `block in run'
+puma (3.12.0) lib/puma/thread_pool.rb:133:in `block in spawn_thread'
+Started PUT "/api/v1/check_out/2" for 127.0.0.1 at 2018-10-08 19:36:17 -0500
+Processing by Api::V1::RegistrationsController#update as */*
+  Parameters: {"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3", "id"=>"2", "registration"=>{"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.3ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (0.7ms)[0m  [1m[33mUPDATE "registrations" SET "check_out" = $1, "updated_at" = $2 WHERE "registrations"."id" = $3[0m  [["check_out", "2018-10-08 17:10:01"], ["updated_at", "2018-10-09 00:36:17.350254"], ["id", 2]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 66ms (Views: 0.5ms | ActiveRecord: 11.6ms)
+
+
+Started PUT "/api/v1/check_out/3" for 127.0.0.1 at 2018-10-08 19:36:27 -0500
+Processing by Api::V1::RegistrationsController#update as */*
+  Parameters: {"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3", "id"=>"3", "registration"=>{"check_out"=>"2018-10-08T17:10:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35mSQL (1.3ms)[0m  [1m[33mUPDATE "registrations" SET "check_out" = $1, "updated_at" = $2 WHERE "registrations"."id" = $3[0m  [["check_out", "2018-10-08 17:10:01"], ["updated_at", "2018-10-09 00:36:27.262804"], ["id", 3]]
+  [1m[35m (5.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 20ms (Views: 0.8ms | ActiveRecord: 8.9ms)
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 22:06:54 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.6ms)[0m  [1m[34mSELECT "registrations"."id", "registrations"."check_in", "registrations"."check_out", "registrations"."user_id" FROM "registrations"[0m
+Completed 200 OK in 7ms (Views: 2.0ms | ActiveRecord: 1.1ms)
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 22:07:50 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.3ms)[0m  [1m[34mSELECT "registrations"."id", "registrations"."check_in", "registrations"."check_out", "registrations"."user_id" FROM "registrations"[0m
+Completed 200 OK in 61ms (Views: 6.0ms | ActiveRecord: 8.9ms)
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 22:08:33 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT "registrations"."id", "registrations"."check_in", "registrations"."check_out", "registrations"."user_id" FROM "registrations"[0m
+Completed 500 Internal Server Error in 103ms (ActiveRecord: 15.0ms)
+
+
+  
+NoMethodError (undefined method `users' for #<Registration:0x00007fa647201990>
+Did you mean?  user
+               user=):
+  
+app/controllers/api/v1/registrations_controller.rb:13:in `index'
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 22:08:43 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT "registrations"."id", "registrations"."check_in", "registrations"."check_out", "registrations"."user_id" FROM "registrations"[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+Completed 200 OK in 60ms (Views: 1.2ms | ActiveRecord: 8.9ms)
+
+
+Started POST "/oauth/token" for 127.0.0.1 at 2018-10-08 22:09:46 -0500
+Processing by Doorkeeper::TokensController#create as */*
+  Parameters: {"grant_type"=>"password", "username"=>"prueba3@mail.com", "password"=>"[FILTERED]", "scope"=>""}
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."email" = $1 ORDER BY "users"."id" ASC LIMIT $2[0m  [["email", "prueba3@mail.com"], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mDoorkeeper::AccessToken Exists (0.7ms)[0m  [1m[34mSELECT  1 AS one FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "e0273248df6d48b18bf3c3bc101ddaf677c5dd4915e17366808fe6149704182f"], ["LIMIT", 1]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "oauth_access_tokens" ("resource_owner_id", "token", "expires_in", "created_at", "scopes") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["resource_owner_id", 3], ["token", "e0273248df6d48b18bf3c3bc101ddaf677c5dd4915e17366808fe6149704182f"], ["expires_in", 432000], ["created_at", "2018-10-09 03:09:46.997427"], ["scopes", ""]]
+  [1m[35m (2.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 200 OK in 205ms
+
+
+Started GET "/api/v1/registrations" for 127.0.0.1 at 2018-10-08 22:09:58 -0500
+Processing by Api::V1::RegistrationsController#index as JSON
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "e0273248df6d48b18bf3c3bc101ddaf677c5dd4915e17366808fe6149704182f"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.6ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."user_id" = $1[0m  [["user_id", 3]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mCACHE User Load (0.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+Completed 200 OK in 15ms (Views: 1.6ms | ActiveRecord: 1.7ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:10:35 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "e0273248df6d48b18bf3c3bc101ddaf677c5dd4915e17366808fe6149704182f"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+Filter chain halted as :validate_admin? rendered or redirected
+Completed 401 Unauthorized in 4ms (Views: 0.2ms | ActiveRecord: 0.7ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:14:02 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (1.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 107ms (ActiveRecord: 19.9ms)
+
+
+  
+NoMethodError (undefined method `validate_day?' for #<Registration:0x00007fa64854b190>
+Did you mean?  validate):
+  
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:15:11 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 72ms (ActiveRecord: 10.0ms)
+
+
+  
+NameError (undefined local variable or method `params' for #<Registration:0x00007fa64b0d1a58>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:15:45 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.7ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 58ms (ActiveRecord: 10.2ms)
+
+
+  
+RuntimeError ():
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:17:13 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 61ms (ActiveRecord: 10.5ms)
+
+
+  
+RuntimeError (2018-10-08 08:00:01 UTC):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:17:33 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 58ms (ActiveRecord: 8.8ms)
+
+
+  
+RuntimeError (8):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:19:49 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 56ms (ActiveRecord: 8.1ms)
+
+
+  
+RuntimeError (#<Registration::ActiveRecord_Relation:0x00007fa6485796a8>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:19:59 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.8ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 56ms (ActiveRecord: 10.0ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 00:36:27">]>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:20:35 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 67ms (ActiveRecord: 8.8ms)
+
+
+  
+NoMethodError (undefined method `render' for #<Registration:0x00007fa648d53ba8>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:21:02 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1[0m  [["check_in", "2018-10-08 08:00:01"]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 56ms (ActiveRecord: 10.5ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 00:36:27">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:21:36 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 AND "registrations"."user_id" = 3[0m  [["check_in", "2018-10-08 08:00:01"]]
+  [1m[36mRegistration Load (0.3ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 69ms (ActiveRecord: 11.4ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 00:36:27">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:22:03 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.8ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1[0m  [["check_in", "2018-10-08 08:00:01"]]
+  [1m[36mRegistration Load (0.7ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 65ms (ActiveRecord: 10.9ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 00:36:27">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+  [1m[36mRegistration Load (0.8ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[35m (1.2ms)[0m  [1m[34mSELECT COUNT(*) FROM "registrations"[0m
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" ORDER BY "registrations"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mRegistration Load (0.7ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" ORDER BY "registrations"."id" DESC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  [1m[35mSQL (1.5ms)[0m  [1m[33mUPDATE "registrations" SET "user_id" = $1, "updated_at" = $2 WHERE "registrations"."id" = $3[0m  [["user_id", 4], ["updated_at", "2018-10-09 03:23:29.102088"], ["id", 3]]
+  [1m[35m (2.9ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:23:37 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (5.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (11.5ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1[0m  [["check_in", "2018-10-08 08:00:01"]]
+  [1m[36mRegistration Load (1.2ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (12.0ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 56ms (ActiveRecord: 32.1ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 4, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 03:23:29">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:23:49 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 AND "registrations"."user_id" = 3[0m  [["check_in", "2018-10-08 08:00:01"]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 60ms (ActiveRecord: 12.0ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 4, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 03:23:29">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:24:24 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 AND "registrations"."user_id" = $2[0m  [["check_in", "2018-10-08 08:00:01"], ["user_id", 3]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 60ms (ActiveRecord: 9.8ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 4, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 03:23:29">]>):
+  
+app/models/registration.rb:7:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:24:40 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.4ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 AND "registrations"."user_id" = $2[0m  [["check_in", "2018-10-08 08:00:01"], ["user_id", 3]]
+  [1m[36mRegistration Load (0.3ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 68ms (ActiveRecord: 11.4ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 4, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 03:23:29">]>):
+  
+app/models/registration.rb:8:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:24:50 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.6ms)[0m  [1m[34mSELECT "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 AND "registrations"."user_id" = $2[0m  [["check_in", "2018-10-08 08:00:01"], ["user_id", 3]]
+  [1m[36mRegistration Load (0.4ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 14ms (ActiveRecord: 2.8ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">, #<Registration id: 3, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 4, created_at: "2018-10-09 00:32:26", updated_at: "2018-10-09 03:23:29">]>):
+  
+app/models/registration.rb:8:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:25:30 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 60ms (ActiveRecord: 11.0ms)
+
+
+  
+RuntimeError (3):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:25:38 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 53ms (ActiveRecord: 10.5ms)
+
+
+  
+RuntimeError (#<User:0x00007fa64716b378>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:27:23 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 49ms (ActiveRecord: 9.0ms)
+
+
+  
+RuntimeError (#<Registration::ActiveRecord_Relation:0x00007fa6471c10c0>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:27:34 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.6ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 65ms (ActiveRecord: 9.4ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">]>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:28:11 -0500
+  
+SyntaxError (/Users/urquides/Documents/Repositorios/Pruebas/RUNA-RH/api-rh/app/models/registration.rb:6: syntax error, unexpected tIDENTIFIER, expecting tSTRING_DEND
+...ion.where(user: self.user)where(check_in: self.check_in).ins...
+...                          ^~~~~):
+  
+app/models/registration.rb:6: syntax error, unexpected tIDENTIFIER, expecting tSTRING_DEND
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:28:23 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 55ms (ActiveRecord: 9.7ms)
+
+
+  
+RuntimeError (#<ActiveRecord::Relation [#<Registration id: 2, check_in: "2018-10-08 08:00:01", check_out: "2018-10-08 17:10:01", user_id: 3, created_at: "2018-10-09 00:30:27", updated_at: "2018-10-09 00:36:17">]>):
+  
+app/models/registration.rb:6:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:31:44 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:31:44.666139"], ["LIMIT", 1]]
+  [1m[35mSQL (0.5ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-09 03:31:44.666139"], ["user_id", 3], ["created_at", "2018-10-09 03:31:44.666029"], ["updated_at", "2018-10-09 03:31:44.666029"]]
+  [1m[35m (10.8ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 75ms (Views: 0.5ms | ActiveRecord: 21.3ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:32:09 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>"3", "registration"=>{"user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.7ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:32:09.826449"], ["LIMIT", 1]]
+  [1m[35mSQL (1.2ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-09 03:32:09.826449"], ["user_id", 3], ["created_at", "2018-10-09 03:32:09.826364"], ["updated_at", "2018-10-09 03:32:09.826364"]]
+  [1m[35m (6.1ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 20ms (Views: 1.0ms | ActiveRecord: 10.4ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:39:48 -0500
+  
+NoMethodError (undefined method `check_in=' for #<Class:0x00007fa648de7060>):
+  
+app/models/registration.rb:9:in `<class:Registration>'
+app/models/registration.rb:1:in `<top (required)>'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:40:05 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>"3", "registration"=>{"user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 107ms (ActiveRecord: 9.9ms)
+
+
+  
+NoMethodError (undefined method `validate_day?' for #<User:0x00007fa64b0cb310>
+Did you mean?  validate):
+  
+app/models/registration.rb:5:in `block in <class:Registration>'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:44:12 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>"3", "registration"=>{"user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (0.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:44:12.630697"], ["LIMIT", 1]]
+  [1m[35mSQL (0.6ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-09 03:44:12.630697"], ["user_id", 3], ["created_at", "2018-10-09 03:44:12.633219"], ["updated_at", "2018-10-09 03:44:12.633219"]]
+  [1m[35m (2.7ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 80ms (Views: 0.8ms | ActiveRecord: 17.7ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:44:21 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"registration"=>{}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (6.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+Completed 400 Bad Request in 13ms (ActiveRecord: 6.5ms)
+
+
+  
+ActionController::ParameterMissing (param is missing or the value is empty: registration):
+  
+app/controllers/api/v1/registrations_controller.rb:34:in `registration_params'
+app/controllers/api/v1/registrations_controller.rb:17:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:44:39 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>nil, "registration"=>{"user_id"=>nil}}
+  [1m[36mDoorkeeper::AccessToken Load (0.2ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 422 Unprocessable Entity in 10ms (Views: 0.6ms | ActiveRecord: 1.8ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:45:03 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (1.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.8ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:45:03.354024"], ["LIMIT", 1]]
+  [1m[35mSQL (1.0ms)[0m  [1m[32mINSERT INTO "registrations" ("check_in", "user_id", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["check_in", "2018-10-09 03:45:03.354024"], ["user_id", 3], ["created_at", "2018-10-09 03:45:03.356523"], ["updated_at", "2018-10-09 03:45:03.356523"]]
+  [1m[35m (6.2ms)[0m  [1m[35mCOMMIT[0m
+Completed 201 Created in 27ms (Views: 0.6ms | ActiveRecord: 12.5ms)
+
+
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:45:33 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (0.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:45:34.099695"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:45:34.099695"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 87ms (ActiveRecord: 11.7ms)
+
+
+  
+RuntimeError (false):
+  
+app/models/registration.rb:12:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:46:18 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (0.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.6ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:46:18.709293"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:46:18.709293"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:46:18.709293"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 78ms (ActiveRecord: 10.5ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:12:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:46:49 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (0.7ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Exists (0.5ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 66ms (ActiveRecord: 9.7ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:12:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:47:20 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (0.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 11]]
+  [1m[36mRegistration Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 00:00:00"], ["LIMIT", 1]]
+  [1m[35m (0.3ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 70ms (ActiveRecord: 10.6ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:13:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:48:16 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (1.3ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (0.5ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:48:16.930640"], ["LIMIT", 11]]
+  [1m[36mRegistration Exists (0.4ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:48:16.930640"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:48:16.930640"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-09 03:48:16.930640"], ["LIMIT", 1]]
+  [1m[35m (0.2ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 77ms (ActiveRecord: 13.9ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:13:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:49:18 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"user_id"=>3, "registration"=>{"user_id"=>3}}
+  [1m[36mDoorkeeper::AccessToken Load (1.4ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (1.6ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" IS NULL LIMIT $1[0m  [["LIMIT", 11]]
+  [1m[36mRegistration Exists (1.2ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.0ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" IS NULL LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[35m (0.7ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 192ms (ActiveRecord: 32.5ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:13:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:49:26 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08T08:00:01", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (1.9ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (1.8ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (0.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (4.0ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 11]]
+  [1m[36mRegistration Exists (2.4ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 08:00:01"], ["LIMIT", 1]]
+  [1m[35m (0.7ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 61ms (ActiveRecord: 13.8ms)
+
+
+  
+RuntimeError (true-false):
+  
+app/models/registration.rb:13:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'
+Started POST "/api/v1/check_in" for 127.0.0.1 at 2018-10-08 22:49:53 -0500
+Processing by Api::V1::RegistrationsController#create as */*
+  Parameters: {"check_in"=>"2018-10-08", "user_id"=>"3", "registration"=>{"check_in"=>"2018-10-08", "user_id"=>"3"}}
+  [1m[36mDoorkeeper::AccessToken Load (1.5ms)[0m  [1m[34mSELECT  "oauth_access_tokens".* FROM "oauth_access_tokens" WHERE "oauth_access_tokens"."token" = $1 LIMIT $2[0m  [["token", "791ca744f21176680db74d23fe22c158db89e77fb65804d2621b1dba1ca2a7f4"], ["LIMIT", 1]]
+  [1m[36mUser Load (31.9ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  [1m[35m (26.8ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUser Load (1.5ms)[0m  [1m[34mSELECT  "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 3], ["LIMIT", 1]]
+  [1m[36mRegistration Load (1.3ms)[0m  [1m[34mSELECT  "registrations".* FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 00:00:00"], ["LIMIT", 11]]
+  [1m[36mRegistration Exists (1.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 00:00:00"], ["LIMIT", 1]]
+  [1m[36mCACHE Registration Exists (0.1ms)[0m  [1m[34mSELECT  1 AS one FROM "registrations" WHERE "registrations"."user_id" = 3 AND "registrations"."check_in" = $1 LIMIT $2[0m  [["check_in", "2018-10-08 00:00:00"], ["LIMIT", 1]]
+  [1m[35m (0.9ms)[0m  [1m[31mROLLBACK[0m
+Completed 500 Internal Server Error in 130ms (ActiveRecord: 65.2ms)
+
+
+  
+RuntimeError (false-true):
+  
+app/models/registration.rb:13:in `validate_day?'
+app/controllers/api/v1/registrations_controller.rb:18:in `create'

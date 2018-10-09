@@ -13,6 +13,8 @@ Rails.application.routes.draw do
       resources :registrations
     end
   end
-  post    'api/v1/sessions' => 'doorkeeper/tokens#create'
-  delete  'api/v1/sessions' => 'doorkeeper/tokens#revoke'
+  post    'api/v1/sessions'  => 'doorkeeper/tokens#create'
+  delete  'api/v1/sessions'  => 'doorkeeper/tokens#revoke'
+  post    'api/v1/check_in'  => 'api/v1/registrations#create'
+  put     'api/v1/check_out/:id' => 'api/v1/registrations#update'
 end

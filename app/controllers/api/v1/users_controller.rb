@@ -18,25 +18,22 @@ class Api::V1::UsersController < Api::V1::BaseController
     user.password = params[:password]
     user.password_confirmation = params[:password_confirmation]
     return render json: { errors: user.errors, message: "User couldn't be created.", success: false }, status: :unprocessable_entity if !user.save
-    response_user = {email: user.email}
-    render json: { user: response_user, message: "User created successfully.", success: true }, status: :created
+    render json: { user: user, message: "User created successfully.", success: true }, status: :created
   end
 
   def update
     return render json: { errors: @user.errors, message: "User couldn't be updated successfully.", success: false }, status: :unprocessable_entity if !@user.update(user_params)
-    response_user = {email: @user.email}
-    render json: { user: response_user, message: "User updated successfully.", success: true }, status: :ok
+    render json: { user: @user, message: "User updated successfully.", success: true }, status: :ok
   end
 
   def show
-    response_user = {email: @user.email}
-    render json: { user: response_user, success: true }, status: :ok
+    render json: { user: @user, success: true }, status: :ok
   end
 
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation, :phone, :maternal, :paternal, :status, :role, :companies_id )
+    params.require(:user).permit(:email, :password, :password_confirmation, :phone, :maternal, :paternal, :status, :role, :companies_id, :name, :city, :number_ext, :number_int, :postal_code, :state, :suburb, :address, :rfc )
   end
 
   def find_user

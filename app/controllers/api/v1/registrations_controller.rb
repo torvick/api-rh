@@ -10,7 +10,7 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
   def index
     @registrations = Registration.all.select(columns) if current_resource_owner.admin?
     @registrations = Registration.where(user_id: current_resource_owner.id) if current_resource_owner.employee?
-    render json: { message: "Consult Correct.", success: true, registrations: @registrations }, status: :ok
+    render json: { message: "Consult Correct.", success: true, registrations: @registrations.as_json(include: [:user] )}, status: :ok
   end
 
   def create
