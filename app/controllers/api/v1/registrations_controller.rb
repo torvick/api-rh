@@ -8,8 +8,12 @@ class Api::V1::RegistrationsController < Api::V1::BaseController
 
   def index
     authorize Registration
-    @registrations = Registration.all.select(columns) if current_resource_owner.admin?
-    @registrations = Registration.where(user_id: current_resource_owner.id) if current_resource_owner.employee?
+    if current_resource_owner.admin? and !params[:employee_id].nil?
+      @registrations = Registration.where(user_id: params[:employee_id]).select(columns)
+    else
+      @registrations = Registration.all.select(columns) if current_resource_owner.admin?
+      @registrations = Registration.where(user_id: current_resource_owner.id) if current_resource_owner.employee?
+    end
     render json: { message: "Consult Correct.", success: true, registrations: @registrations.as_json(include: [:user] )}, status: :ok
   end
 
