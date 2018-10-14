@@ -8,9 +8,7 @@ class Api::V1::CompaniesController < Api::V1::BaseController
 
   def index
     authorize Company
-    @companies = Company.all.select(columns) if current_resource_owner.admin? and  params[:companie_id].nil?
-    # @companies = Company.where(id: current_resource_owner.companies_id).select(columns) if current_resource_owner.admin? and  params[:companie_id].nil?
-    @companies = Company.where(id: params[:companie_id]).select(columns) if current_resource_owner.admin? and !params[:companie_id].nil?
+    @companies = Company.all.select(columns) if current_resource_owner.admin?
     render json: { message: "Consult Correct.", success: true, companies: @companies }, status: :ok
   end
 

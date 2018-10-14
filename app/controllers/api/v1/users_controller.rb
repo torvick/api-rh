@@ -8,7 +8,8 @@ class Api::V1::UsersController < Api::V1::BaseController
 
   def index
     authorize User
-    @users = User.where(companies_id: current_resource_owner.companies_id ).select(columns) if current_resource_owner.admin?
+    @users = User.all.select(columns) if current_resource_owner.admin?
+    @users = User.where(companies_id: params[:companie_id] ).select(columns) if current_resource_owner.admin? and !params[:companie_id].nil?
     @users = [current_resource_owner] if current_resource_owner.employee?
     render json: { message: "Consult Correct.", success: true, users: @users.as_json(include: [:registrations]) }, status: :ok
   end
